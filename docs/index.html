@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101727">
+  <meta name="description" content="Roku Nexus: controla tu Roku desde el navegador, directamente en tu red local.">
+  <title>Roku Nexus</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <style>.settings-link{display:flex;align-items:center;gap:8px;margin-top:10px}.settings-link code{flex:1;min-width:0;overflow-wrap:anywhere;padding:8px;border:1px solid #2b3a55;border-radius:8px;background:#111827;color:#bbf7d0;font-size:.73rem}.settings-link .button{padding:8px 10px;font-size:.76rem}</style>
+  <style>.language-switch{display:flex;justify-content:center;align-items:center;gap:6px;width:max-content;max-width:100%;margin:0 auto 18px;padding:5px;border:1px solid #43516b;border-radius:13px;background:#111a2b;color:#dce5f2;font-size:.82rem}.language-label{padding:0 5px;color:#a8b5ca}.language-switch button{padding:8px 10px;border:1px solid #374964;border-radius:9px;background:#172237;color:#f4f7fc;font-size:.8rem;cursor:pointer}.language-switch button span{font-weight:600}.language-switch button[aria-pressed=true]{border-color:#86efac;color:#fff;background:#173d2b}.network-scan{margin:14px 0 12px;padding:12px 13px;border:1px solid #2b3a55;border-radius:13px;background:#111a2b}.network-scan summary{cursor:pointer;color:#dcfce7;font-size:.9rem;font-weight:700}.network-scan>.helper{margin:9px 0}.network-scan progress{width:100%;height:9px;margin-top:10px;accent-color:#22c55e}.scan-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.scan-candidate{padding:9px;border:1px solid #43516b;border-radius:10px;background:#1d2940;color:#f5f7fc;cursor:pointer}.scan-candidate:hover{border-color:#86efac}.manual-title{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:#a8b5ca;font-size:.78rem}.manual-title:before,.manual-title:after{content:"";height:1px;flex:1;background:#2b3a55}</style>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="language-switch" role="group" aria-label="Language / Idioma"><span class="language-label" data-i18n="language">Idioma</span><button id="lang-es" type="button" aria-label="Español" aria-pressed="true">ES <span>Español</span></button><button id="lang-en" type="button" aria-label="English" aria-pressed="false">EN <span>English</span></button></div>
+      <div class="mark" aria-hidden="true">⚜</div>
+      <p class="eyebrow" data-i18n="eyebrow">CONTROL REMOTO EN TU NAVEGADOR</p>
+      <h1>Roku Nexus</h1>
+      <p class="intro" data-i18n="intro">El control de tu Roku, directamente desde el navegador.</p>
+    </header>
+
+    <section class="card setup" aria-labelledby="setup-title">
+      <div class="section-title"><span class="step">1</span><div><h2 id="setup-title" data-i18n="setupTitle">Prepara tu Roku</h2><p data-i18n="setupSub">Ambos dispositivos deben estar en la misma red Wi‑Fi.</p></div></div>
+      <details class="instructions">
+        <summary data-i18n="rokuSettingsTitle">Cómo permitir el control por red</summary>
+        <ol id="roku-steps">
+          <li data-i18n="rokuStep1">En Roku, abre Configuración → Sistema → Configuración avanzada del sistema.</li>
+          <li data-i18n="rokuStep2">Entra en Control por aplicaciones móviles → Acceso a la red.</li>
+          <li data-i18n="rokuStep3">Selecciona Habilitado. El nombre del menú puede variar según la versión.</li>
+        </ol>
+        <p class="tip" data-i18n="rokuVersion">Desde Roku OS 14.1, este permiso debe estar habilitado para aceptar los botones del control.</p>
+      </details>
+    </section>
+
+    <section class="card connect" aria-labelledby="connect-title">
+      <div class="section-title"><span class="step">2</span><div><h2 id="connect-title" data-i18n="connectTitle">Conecta tu dispositivo</h2><p data-i18n="connectSub">Escribe la dirección IP de tu Roku o búscala en tu red.</p></div></div>
+      <details id="scan-panel" class="network-scan">
+        <summary data-i18n="scanTitle">Buscar Roku en mi red</summary>
+        <p class="helper" data-i18n="scanExplain">El navegador no puede hacer el descubrimiento SSDP de la aplicación de PC. Puedes buscar el rango local de 254 direcciones; escribe los primeros tres números de una IP de tu Wi‑Fi.</p>
+        <label for="network-prefix" data-i18n="prefixLabel">Rango de red</label>
+        <div class="ip-row"><input id="network-prefix" inputmode="decimal" autocomplete="off" placeholder="192.168.1" aria-describedby="scan-help"><button id="scan-button" class="button secondary" data-i18n="scanButton">Buscar</button></div>
+        <p id="scan-help" class="helper" data-i18n="scanHelp">Ejemplo: si la IP de tu celular es 192.168.1.23, escribe 192.168.1.</p>
+        <progress id="scan-progress" max="254" value="0" hidden></progress>
+        <div id="scan-status" class="status" role="status" aria-live="polite"></div>
+        <div id="scan-results" class="scan-results"></div>
+      </details>
+      <div class="manual-title"><span class="divider" data-i18n="orEnter">O escribe la IP manualmente</span></div>
+      <label for="roku-ip" data-i18n="ipLabel">Dirección IP de Roku</label>
+      <div class="ip-row"><input id="roku-ip" inputmode="decimal" autocomplete="off" placeholder="Ejemplo: 192.168.1.25" aria-describedby="ip-help"><button id="connect-button" class="button primary" data-i18n="connectButton">Conectar</button></div>
+      <p id="ip-help" class="helper" data-i18n="ipHelp">Encuéntrala en Roku: Configuración → Red → Acerca de.</p>
+      <div class="permission-note"><span class="lock" aria-hidden="true">◉</span><p data-i18n="permissionNote">Al conectar o buscar, tu navegador puede pedir permiso para acceder a dispositivos de tu red local.</p></div>
+      <div id="connection-status" class="status" role="status" aria-live="polite"></div>
+      <div id="recovery" class="recovery" hidden>
+        <h3 data-i18n="blockedTitle">¿Bloqueaste el acceso local?</h3>
+        <ol>
+          <li data-i18n="blockedStep1">Abre los ajustes del sitio desde el icono junto a la dirección de esta página.</li>
+          <li data-i18n="blockedStep2">Busca Red local y selecciona Permitir. En Chrome, el atajo de ajustes de abajo abre esta configuración.</li>
+          <li data-i18n="blockedStep3">Regresa aquí y toca Volver a intentar.</li>
+        </ol>
+        <button id="retry-button" class="button secondary" data-i18n="retryButton">Volver a intentar</button>
+        <p class="helper" data-i18n="settingsHelp">Si el atajo no abre, copia la dirección y pégala en la barra. En Edge, usa los ajustes del sitio desde el icono de la barra.</p>
+        <div class="settings-link"><code id="settings-url">chrome://settings/content/siteDetails</code><button id="copy-settings" class="button secondary" type="button" data-i18n="copyButton">Copiar</button></div>
+      </div>
+    </section>
+
+    <section id="remote" class="card remote-card" aria-labelledby="remote-title" hidden>
+      <div class="remote-heading"><div><p class="eyebrow" data-i18n="selectedDevice">DISPOSITIVO SELECCIONADO</p><h2 id="remote-title">Mi Roku</h2></div><button id="change-device" class="text-button" data-i18n="changeIp">Cambiar IP</button></div>
+      <div class="top-actions" aria-label="Inicio y regresar" data-i18n-aria="topControls">
+        <button class="key icon-key" data-key="Back" aria-label="Atrás" data-i18n-aria="back">‹</button>
+        <button class="key icon-key" data-key="Home" aria-label="Home" data-i18n-aria="home">⌂</button>
+      </div>
+      <div class="dpad" aria-label="Navegación" data-i18n-aria="navigation">
+        <span class="spacer"></span><button class="key arrow" data-key="Up" aria-label="Arriba" data-i18n-aria="up">▲</button><span class="spacer"></span>
+        <button class="key arrow" data-key="Left" aria-label="Izquierda" data-i18n-aria="left">◀</button><button class="key select" data-key="Select" aria-label="OK" data-i18n-aria="select">OK</button><button class="key arrow" data-key="Right" aria-label="Derecha" data-i18n-aria="right">▶</button>
+        <span class="spacer"></span><button class="key arrow" data-key="Down" aria-label="Abajo" data-i18n-aria="down">▼</button><span class="spacer"></span>
+      </div>
+      <div class="secondary-actions" aria-label="Repetición y opciones" data-i18n-aria="secondaryControls">
+        <button class="key icon-key" data-key="InstantReplay" aria-label="Repetición instantánea" data-i18n-aria="replay">⟲</button>
+        <button class="key icon-key" data-key="Info" aria-label="Asterisco / opciones" data-i18n-aria="options">＊</button>
+      </div>
+      <div class="media-actions" aria-label="Reproducción" data-i18n-aria="playback">
+        <button class="key icon-key" data-key="Rev" aria-label="Retroceder" data-i18n-aria="rewind">⏪</button>
+        <button class="key icon-key play-key" data-key="Play" aria-label="Reproducir o pausar" data-i18n-aria="playPause">▶❚❚</button>
+        <button class="key icon-key" data-key="Fwd" aria-label="Adelantar" data-i18n-aria="fastForward">⏩</button>
+      </div>
+      <button id="type-open" class="key keyboard-button" type="button" aria-label="Abrir teclado" data-i18n-aria="openKeyboard">⌨</button>
+      <details class="more-controls"><summary data-i18n="volumePower">Volumen y encendido</summary><p class="helper" data-i18n="modelControls">Estos botones dependen del modelo Roku y del televisor conectado.</p><div class="key-grid"><button class="key icon-key" data-key="VolumeDown" aria-label="Bajar volumen" data-i18n-aria="volumeDown">−</button><button class="key icon-key" data-key="VolumeUp" aria-label="Subir volumen" data-i18n-aria="volumeUp">＋</button><button class="key icon-key" data-key="VolumeMute" aria-label="Silenciar" data-i18n-aria="mute">◖</button><button class="key icon-key" data-key="PowerOff" aria-label="Encendido" data-i18n-aria="power">⏻</button></div></details>
+      <div id="remote-status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <footer><p data-i18n="privacy">Los comandos van desde tu navegador directamente a la Roku en tu red. Este sitio no necesita tu cuenta Roku ni envía la IP a un servidor.</p><p><a href="https://developer.roku.com/dev/docs/external-control-api" target="_blank" rel="noopener noreferrer" data-i18n="ecpLink">Cómo funciona el control ECP de Roku</a></p></footer>
+  </main>
+  <dialog id="permission-dialog" aria-labelledby="permission-title">
+    <div class="dialog-body"><div class="dialog-icon" aria-hidden="true">⌁</div><p class="eyebrow" data-i18n="securityStep">UN PASO DE SEGURIDAD</p><h2 id="permission-title" data-i18n="allowNetwork">Permite el acceso a la red local</h2><p data-i18n="permissionDialog">Tu Roku está en tu Wi‑Fi. El navegador necesita tu permiso para que esta página pueda enviarle comandos.</p><button id="permission-continue" class="button primary full" data-i18n="permissionContinue">Entendido, continuar</button><button id="permission-cancel" class="text-button full" data-i18n="notNow">Ahora no</button></div>
+  </dialog>
+  <dialog id="keyboard-dialog" aria-labelledby="keyboard-title" aria-describedby="keyboard-help">
+    <div class="dialog-body keyboard-dialog-body">
+      <button id="keyboard-close" class="text-button dialog-close" type="button" aria-label="Cerrar" data-i18n-aria="closeDialog">×</button>
+      <p class="eyebrow" data-i18n="keyboardEyebrow">TECLADO DE ROKU</p>
+      <h2 id="keyboard-title" data-i18n="typeLabel">Escribir en Roku</h2>
+      <p id="keyboard-help" class="helper" data-i18n="typeHelp">Escribe cuando la Roku muestre un campo de búsqueda o teclado.</p>
+      <div class="keyboard-input-row"><input id="roku-text" type="text" autocomplete="off" maxlength="100" data-i18n-placeholder="typePlaceholder" placeholder="Escribe aquí…"><button id="keyboard-backspace" class="key icon-key" type="button" aria-label="Borrar carácter" data-i18n-aria="deleteCharacter">⌫</button></div>
+      <button id="keyboard-enter" class="button primary keyboard-enter" type="button" data-i18n="enterButton">Entrar</button>
+      <p id="keyboard-status" class="status" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+</body>
+</html>
