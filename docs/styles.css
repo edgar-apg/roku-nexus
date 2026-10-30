@@ -21,3 +21,21 @@
 .app-button:active{transform:scale(.98);background:#176b42}
 .app-button:disabled{opacity:.42;cursor:not-allowed}
 @media(max-width:390px){.app-button{font-size:.82rem;padding:7px 5px}}
+
+/* Keep language selection and header actions in separate, non-overlapping areas. */
+.header-tools{position:static;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;min-height:0}
+.header-tools .language-switch{width:max-content;max-width:100%;min-width:0;margin:0;justify-self:center;flex-wrap:wrap}
+.header-actions{display:flex;align-items:center;gap:8px}
+.help-toggle,.settings-toggle{position:static;flex:0 0 43px;width:43px;height:43px}
+.help-toggle{font-family:inherit}
+.settings-panel{margin-top:10px}
+.app-shortcuts,.always-controls{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.app-shortcuts>summary,.always-controls>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;list-style:none;cursor:pointer;color:#dcfce7;font-size:.95rem;font-weight:700}
+.app-shortcuts>summary::-webkit-details-marker,.always-controls>summary::-webkit-details-marker{display:none}
+.app-shortcuts>summary::after,.always-controls>summary::after{content:"＋";color:var(--green);font-size:1.15rem;line-height:1}
+.app-shortcuts[open]>summary::after,.always-controls[open]>summary::after{content:"−"}
+.app-shortcuts .apps-grid{margin-top:8px}
+.always-controls .controls-helper{margin:0 0 8px}
+.always-controls .key-grid{margin-top:0}
+@media(max-width:520px){.header-tools{grid-template-columns:minmax(0,1fr);gap:9px}.header-tools .language-switch{justify-self:center}.header-actions{justify-content:center}.hero{padding-top:8px}}
+@media(max-width:390px){.help-toggle,.settings-toggle{flex-basis:39px;width:39px;height:39px}.header-tools .language-switch{gap:4px;padding:4px}.header-tools .language-switch button{padding:7px 8px}}
