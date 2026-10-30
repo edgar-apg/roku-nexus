@@ -37,5 +37,5 @@
 .app-shortcuts .apps-grid{margin-top:8px}
 .always-controls .controls-helper{margin:0 0 8px}
 .always-controls .key-grid{margin-top:0}
-@media(max-width:520px){.header-tools{grid-template-columns:minmax(0,1fr);gap:9px}.header-tools .language-switch{justify-self:center}.header-actions{justify-content:center}.hero{padding-top:8px}}
+@media(max-width:520px){.header-tools{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:8px}.header-tools .language-switch{width:100%;justify-self:stretch;justify-content:center}.header-actions{flex-direction:column;gap:7px;align-items:center}.hero{padding-top:8px}}
 @media(max-width:390px){.help-toggle,.settings-toggle{flex-basis:39px;width:39px;height:39px}.header-tools .language-switch{gap:4px;padding:4px}.header-tools .language-switch button{padding:7px 8px}}
