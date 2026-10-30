@@ -15,13 +15,19 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <div class="language-switch" role="group" aria-label="Language / Idioma"><span class="language-label" data-i18n="language">Idioma</span><button id="lang-es" type="button" aria-label="Español" aria-pressed="true">ES <span>Español</span></button><button id="lang-en" type="button" aria-label="English" aria-pressed="false">EN <span>English</span></button></div>
+      <div class="header-tools">
+        <div class="language-switch" role="group" aria-label="Language / Idioma"><span class="language-label" data-i18n="language">Idioma</span><button id="lang-es" type="button" aria-label="Español" aria-pressed="true">ES <span>Español</span></button><button id="lang-en" type="button" aria-label="English" aria-pressed="false">EN <span>English</span></button></div>
+        <a class="help-toggle" href="https://github.com/edgar-apg/roku-nexus/blob/main/README.md" target="_blank" rel="noopener noreferrer" aria-label="Ayuda" title="Ayuda" data-i18n-aria="help">?</a>
+        <button id="settings-toggle" class="settings-toggle" type="button" aria-controls="settings-panel" aria-expanded="false" aria-label="Configuración" data-i18n-aria="settings">⚙</button>
+      </div>
       <div class="mark" aria-hidden="true">⚜</div>
       <p class="eyebrow" data-i18n="eyebrow">CONTROL REMOTO EN TU NAVEGADOR</p>
       <h1>Roku Nexus</h1>
       <p class="intro" data-i18n="intro">El control de tu Roku, directamente desde el navegador.</p>
     </header>
 
+    <div id="settings-panel" class="settings-panel" hidden>
+    <h2 class="settings-heading" data-i18n="settings">Configuración</h2>
     <section class="card setup" aria-labelledby="setup-title">
       <div class="section-title"><span class="step">1</span><div><h2 id="setup-title" data-i18n="setupTitle">Prepara tu Roku</h2><p data-i18n="setupSub">Ambos dispositivos deben estar en la misma red Wi‑Fi.</p></div></div>
       <details class="instructions">
@@ -66,8 +72,10 @@
       </div>
     </section>
 
-    <section id="remote" class="card remote-card" aria-labelledby="remote-title" hidden>
-      <div class="remote-heading"><div><p class="eyebrow" data-i18n="selectedDevice">DISPOSITIVO SELECCIONADO</p><h2 id="remote-title">Mi Roku</h2></div><button id="change-device" class="text-button" data-i18n="changeIp">Cambiar IP</button></div>
+    </div>
+
+    <section id="remote" class="card remote-card" aria-labelledby="remote-title">
+      <div class="remote-heading"><div><p class="eyebrow" data-i18n="selectedDevice">DISPOSITIVO SELECCIONADO</p><h2 id="remote-title">Roku Nexus</h2></div></div>
       <div class="top-actions" aria-label="Inicio y regresar" data-i18n-aria="topControls">
         <button class="key icon-key" data-key="Back" aria-label="Atrás" data-i18n-aria="back">‹</button>
         <button class="key icon-key" data-key="Home" aria-label="Home" data-i18n-aria="home">⌂</button>
@@ -87,7 +95,21 @@
         <button class="key icon-key" data-key="Fwd" aria-label="Adelantar" data-i18n-aria="fastForward">⏩</button>
       </div>
       <button id="type-open" class="key keyboard-button" type="button" aria-label="Abrir teclado" data-i18n-aria="openKeyboard">⌨</button>
-      <details class="more-controls"><summary data-i18n="volumePower">Volumen y encendido</summary><p class="helper" data-i18n="modelControls">Estos botones dependen del modelo Roku y del televisor conectado.</p><div class="key-grid"><button class="key icon-key" data-key="VolumeDown" aria-label="Bajar volumen" data-i18n-aria="volumeDown">−</button><button class="key icon-key" data-key="VolumeUp" aria-label="Subir volumen" data-i18n-aria="volumeUp">＋</button><button class="key icon-key" data-key="VolumeMute" aria-label="Silenciar" data-i18n-aria="mute">◖</button><button class="key icon-key" data-key="PowerOff" aria-label="Encendido" data-i18n-aria="power">⏻</button></div></details>
+      <section class="app-shortcuts" aria-labelledby="apps-title">
+        <h3 id="apps-title" data-i18n="appsTitle">Aplicaciones</h3>
+        <div class="apps-grid">
+          <button class="app-button" type="button" data-app="netflix">Netflix</button>
+          <button class="app-button" type="button" data-app="youtube">YouTube</button>
+          <button class="app-button" type="button" data-app="disney">Disney+</button>
+          <button class="app-button" type="button" data-app="spotify">Spotify</button>
+          <button class="app-button" type="button" data-app="prime">Amazon Prime Video</button>
+          <button class="app-button" type="button" data-app="hbo">HBO Max</button>
+        </div>
+      </section>
+      <section class="always-controls" aria-labelledby="volume-power-title">
+        <div class="controls-caption"><h3 id="volume-power-title" data-i18n="volumePower">Volumen y encendido</h3><p class="helper" data-i18n="modelControls">Estos botones dependen del modelo Roku y del televisor conectado.</p></div>
+        <div class="key-grid"><button class="key icon-key" data-key="VolumeDown" aria-label="Bajar volumen" data-i18n-aria="volumeDown">−</button><button class="key icon-key" data-key="VolumeUp" aria-label="Subir volumen" data-i18n-aria="volumeUp">＋</button><button class="key icon-key" data-key="VolumeMute" aria-label="Silenciar" data-i18n-aria="mute">◖</button><button class="key icon-key" data-key="PowerOff" aria-label="Encendido" data-i18n-aria="power"><svg class="power-symbol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2v10"/><path d="M7.05 4.93a9 9 0 1 0 9.9 0"/></svg></button></div>
+      </section>
       <div id="remote-status" class="status" role="status" aria-live="polite"></div>
     </section>
 

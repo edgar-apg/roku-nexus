@@ -1,67 +1,58 @@
 # Roku Nexus
 
-## Versión para sitio público
+Controla tu dispositivo Roku desde el navegador de una computadora o celular. Los comandos se envían directamente desde el navegador a Roku a través de la red local. No necesitas iniciar sesión con una cuenta Roku.
 
-La carpeta `docs/` contiene un prototipo estático que puede publicarse con GitHub Pages. Cada visitante abre la dirección HTTPS y el navegador intenta mandar botones directamente a su Roku por la red local; el servidor público no recibe la IP de la TV ni las órdenes del control.
+## Antes de empezar
 
-La página detecta el idioma preferido del navegador (español o inglés) y ofrece un selector manual. Incluye el favicon SVG compartido por el usuario, una guía de preparación, una explicación previa al permiso de red local, recuperación si el permiso está bloqueado e ingreso manual de IP.
+- Conecta Roku y el dispositivo desde el que abrirás Roku Nexus a la misma red Wi-Fi.
+- En Roku, permite el control por red:
+  **Configuración → Sistema → Configuración avanzada del sistema → Control por aplicaciones móviles → Acceso a la red → Habilitado**.
+- Desde Roku OS 14.1, esta opción debe estar habilitada para aceptar comandos de control.
 
-La interfaz usa verde como color de acentuación. Para probar el permiso de red local desde un navegador, sirve la página desde HTTPS; abrir el archivo HTML directamente no reproduce ese flujo.
+Los nombres de los menús pueden variar según el modelo o la versión del sistema.
 
-El botón **Buscar Roku en mi red** hace una búsqueda web de mejor esfuerzo: la persona indica los primeros tres bloques de una IP local y el navegador revisa los 254 equipos de ese rango en el puerto ECP 8060. El navegador no puede ejecutar directamente el descubrimiento multicast SSDP que usa la versión Python. Después prueba leer el nombre amigable o modelo mediante `/query/device-info`; si la Roku permite CORS para esa página, muestra el nombre reportado. Si no, muestra un nombre genérico junto a la IP. Los resultados son posibles dispositivos que respondieron en ese puerto; el usuario elige uno y decide si enviar Inicio. La búsqueda ocurre en el navegador del visitante; el sitio publicado no recibe esas direcciones.
+## Conectar con Roku
 
-**Prototipo, aún no validado en navegadores ni listo para publicar:** la Roku no garantiza permiso CORS, así que la página no puede garantizar que recupere nombres, confirme la conexión o lea las aplicaciones. Después de Conectar, pide comprobar visualmente si Roku volvió a Inicio. La búsqueda por rango es lenta y puede listar otros servicios HTTP en el puerto 8060. El envío directo de comandos depende del permiso de red local, de HTTPS y de las políticas del navegador. Se debe probar con los navegadores y dispositivos que quieras admitir antes de anunciarlo como compatible. La guía de Chrome explica que leer respuestas entre orígenes requiere los encabezados CORS correspondientes.
+1. Abre Roku Nexus en el navegador.
+2. Si el navegador pide permiso para acceder a la red local, permite el acceso.
+3. Abre **⚙ Configuración**.
+4. Busca Roku en la red o escribe su dirección IP y pulsa **Conectar**.
+5. Cuando la conexión se complete, usa los botones del control. Si Roku no responde, comprueba la configuración de red y el permiso del navegador.
 
-Para publicar manualmente en GitHub Pages:
+Para encontrar la dirección IP en Roku, abre **Configuración → Red → Acerca de**.
 
-1. Sube el contenido de esta carpeta a un repositorio público de GitHub.
-2. En el repositorio abre **Settings → Pages**.
-3. En **Build and deployment**, elige **Deploy from a branch**, la rama que subiste y la carpeta **/docs**; guarda.
-4. GitHub mostrará la dirección cuando termine la publicación.
+## Controles
 
-GitHub Pages gratuito requiere que el repositorio sea público. Publicar el sitio permite que cualquiera lo visite, pero cada persona solo podrá controlar su propia Roku en su red local si su navegador lo permite. No he subido el repositorio ni publicado la página.
+El control principal incluye:
 
-## Versión local para Windows
+- Atrás y Home.
+- Flechas de navegación y **OK**.
+- Repetición instantánea y opciones.
+- Retroceder, reproducir o pausar y adelantar.
+- Un teclado para escribir en el campo de texto activo de Roku. El texto se envía mientras escribes; también puedes borrar caracteres y pulsar **Entrar**.
+- Botones de volumen, silencio y encendido.
 
-La versión Python descrita abajo sirve la interfaz desde tu PC y puede ser abierta en un celular conectado a la misma red. Usa Python estándar, sin paquetes ni servicios de pago.
+Algunas funciones dependen del modelo de Roku y del televisor conectado. Por ejemplo, un Roku Streaming Stick no garantiza que los controles de volumen o encendido funcionen con cualquier televisor.
 
-## Requisitos
+## Aplicaciones
 
-- Windows 10/11 con Python 3.10 o posterior instalado y disponible como `py` o `python`.
-- PC y Roku en la misma red doméstica; para usar el celular, también debe estar conectado a esa red.
-- En Roku, revisa **Configuración > Sistema > Configuración avanzada del sistema > Control por aplicaciones móviles / Acceso a la red** y permite el control según las opciones disponibles en tu versión. Roku OS 14.1 y posteriores requieren habilitar el control por red para recibir los botones ECP.
+Los botones de Netflix, YouTube, Disney+, Spotify, Amazon Prime Video y HBO Max solicitan abrir la aplicación en Roku. Para que funcione, la aplicación debe estar disponible e instalada en ese dispositivo.
 
-## Inicio
+El navegador puede enviar la solicitud, pero no siempre puede leer la respuesta de Roku. Si una app no se abre, verifica que esté instalada y prueba abrirla desde el menú de Roku.
 
-1. Haz doble clic en `INICIAR.bat`.
-2. La primera vez, Windows puede preguntar si Python puede comunicarse en redes privadas. Permítelo solo para tu red privada/doméstica si quieres usar el celular.
-3. En la misma PC abre `http://127.0.0.1:8000`.
-4. En el celular conectado a la misma Wi-Fi abre la dirección `http://...:8000` que muestra la ventana de Python.
-5. Ingresa en cada navegador la contraseña temporal que aparece en esa ventana.
-6. Escribe la IP de la Roku (Configuración > Red > Acerca de) y pulsa **Conectar**. También puedes probar **Buscar**; si el router bloquea SSDP, el ingreso manual sigue disponible.
+## Si Roku no responde
 
-Deja abierta la ventana de Python mientras usas el control. Cierra esa ventana para detener el servidor. La contraseña cambia en cada inicio.
+- Comprueba que ambos dispositivos estén en la misma red Wi-Fi.
+- Asegúrate de que Roku tenga habilitado **Acceso a la red**.
+- Permite el acceso a la red local en la configuración del navegador para Roku Nexus.
+- Evita redes de invitados o configuraciones del router que aíslen los dispositivos entre sí.
+- Vuelve a conectar Roku Nexus usando la dirección IP actual del dispositivo.
+- Cierra y vuelve a abrir la página si cambiaste un permiso del navegador.
 
-## Controles y compatibilidad
+La búsqueda automática revisa direcciones de una red local indicada manualmente. Puede tardar y quizá no encuentre Roku si el router o el navegador restringen el acceso local. En ese caso, conecta usando la dirección IP.
 
-La navegación, Inicio, Atrás y reproducción usan comandos ECP. La lista de aplicaciones se consulta a Roku y permite abrirlas. Volumen y encendido aparecen si el dispositivo se identifica como Roku TV o informa compatibilidad. La disponibilidad real depende del modelo, del televisor conectado y de su configuración. Un Streaming Stick puede controlar lo que expone su Roku, pero no garantiza controles de volumen/encendido de cualquier televisor HDMI.
+## Privacidad y seguridad
 
-## Seguridad y red
+Roku Nexus envía los comandos desde tu navegador directamente a Roku en la red local. No necesita tu cuenta Roku para funcionar.
 
-- El servidor escucha en la red local para que el celular pueda abrir la página. La contraseña se genera al iniciar y la sesión caduca tras 12 horas.
-- Roku ECP usa HTTP sin cifrado. Usa una red Wi-Fi doméstica protegida, no compartas la contraseña y detén el programa cuando termines.
-- No abras puertos en el router ni publiques el servidor en Internet. No uses una red Wi-Fi pública.
-- La lista de IP/nombres se conserva en el almacenamiento local del navegador; la contraseña no se guarda en la página.
-- Si Windows Firewall bloquea el acceso, permite Python en redes privadas. Asegúrate también de que el router no tenga aislamiento de clientes o red de invitados.
-
-## Configuración opcional
-
-La contraseña temporal se puede sustituir antes de iniciar definiendo la variable `ROKU_REMOTE_PASSWORD` en la consola. No uses una contraseña de otras cuentas. Para detener el programa, presiona Ctrl+C o cierra la ventana.
-
-## Teclado y botones
-
-La página pública incluye un botón de teclado que abre un diálogo. Cada carácter que se escribe o borra se transmite al campo de texto activo en Roku; usa los comandos Lit_ y Backspace de ECP. El campo de Roku debe estar abierto y aceptar entrada de texto; no equivale a un teclado virtual universal para todas las apps. Los botones principales siguen la distribución del control de referencia (Atrás y Home arriba, flechas con OK al centro, repetición y asterisco debajo, y reproducción al final). Solo muestran símbolos, con nombres accesibles para lectores de pantalla. El botón de asterisco/opciones usa el comando Info reconocido por Roku ECP.
-
-
-El diálogo también tiene el botón **Entrar**, que envía la tecla Enter de ECP después de terminar los caracteres pendientes.
-
+Usa la página desde una conexión HTTPS y una red Wi-Fi de confianza. No compartas el acceso a redes domésticas con personas desconocidas.

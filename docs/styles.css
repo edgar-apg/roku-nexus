@@ -7,3 +7,17 @@
 .keyboard-enter{width:100%;margin-top:10px}
 
 .mark{width:50px;height:50px;border-radius:16px;font-family:Georgia,serif;font-size:2rem}
+
+.header-tools{position:relative;display:flex;justify-content:center;align-items:flex-start;min-height:49px}.header-tools .language-switch{margin:0 auto 18px}.settings-toggle{position:absolute;right:0;top:3px;width:43px;height:43px;border:1px solid #43516b;border-radius:13px;background:#172237;color:#dcfce7;font-size:1.35rem;cursor:pointer}.settings-toggle:hover,.settings-toggle[aria-expanded=true]{border-color:#86efac;background:#173d2b}.settings-panel{margin-top:10px}.settings-heading{margin:10px 4px 2px;color:#dcfce7;font-size:1.18rem}.always-controls{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}.controls-caption{text-align:center}.controls-caption h3{margin:0;font-size:.95rem}.controls-caption .helper{margin-top:3px}.always-controls .key-grid{margin-top:10px}.always-controls .key-grid .key{min-height:55px;font-size:1.25rem}.key:disabled{opacity:.42;cursor:not-allowed;filter:saturate(.45)}.key:disabled:hover{border-color:#374964;background:linear-gradient(150deg,#24324a,#192439)}@media(max-width:390px){.settings-toggle{width:39px;height:39px;right:-2px}.header-tools .language-switch{gap:4px;padding:4px}.header-tools .language-switch button{padding:7px 8px}}
+.power-symbol{display:block;width:1.35em;height:1.35em;margin:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.help-toggle{position:absolute;right:51px;top:3px;width:43px;height:43px;display:grid;place-items:center;border:1px solid #43516b;border-radius:13px;background:#172237;color:#dcfce7;text-decoration:none;font-size:1.3rem;font-weight:750;line-height:1}
+.help-toggle:hover{border-color:#86efac;background:#173d2b}
+@media(max-width:390px){.help-toggle{right:43px;width:39px;height:39px}}
+.app-shortcuts{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.app-shortcuts h3{margin:0;text-align:center;font-size:.95rem}
+.apps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.app-button{min-width:0;min-height:54px;padding:8px;border:1px solid #374964;border-radius:15px;background:linear-gradient(150deg,#24324a,#192439);color:#f5f7fb;font:inherit;font-size:.9rem;font-weight:650;overflow-wrap:anywhere;cursor:pointer;touch-action:manipulation}
+.app-button:hover{border-color:#4ade80;background:#2b3853}
+.app-button:active{transform:scale(.98);background:#176b42}
+.app-button:disabled{opacity:.42;cursor:not-allowed}
+@media(max-width:390px){.app-button{font-size:.82rem;padding:7px 5px}}
